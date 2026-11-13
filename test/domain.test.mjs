@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import * as domain from '../src/domain.mjs';
+const data=JSON.parse(await readFile(new URL('../fixtures/source.json',import.meta.url))).data;
+const {axisValue,preview}=domain;
+test('资料对象的领域边界和原始预览',async()=>{assert.equal(axisValue(0,1,100,true),1);
+assert.ok(Math.abs(axisValue(.5,1,100,true)-10)<1e-9);
+assert.throws(()=>axisValue(.5,0,100,true));
+assert.equal(preview(data).length,2);});
